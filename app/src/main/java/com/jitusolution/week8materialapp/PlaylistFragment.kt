@@ -7,14 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import kotlinx.android.synthetic.main.fragment_playlist.*
 import kotlinx.android.synthetic.main.fragment_playlist.view.*
 import org.json.JSONObject
 
@@ -34,6 +31,13 @@ class PlaylistFragment : Fragment() {
     private var param2: String? = null
 
     var playlists: ArrayList<Playlist> = ArrayList()
+
+    override fun onStart() {
+        playlists.clear()
+        getPlaylists()
+        super.onStart()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -41,6 +45,10 @@ class PlaylistFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
+        getPlaylists()
+    }
+
+    fun getPlaylists() {
         val q = Volley.newRequestQueue(activity)
         val url = "https://ubaya.fun/flutter/ferdi/music/get_playlist.php"
         val stringRequest = StringRequest(
